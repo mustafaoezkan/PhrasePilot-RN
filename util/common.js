@@ -11,9 +11,11 @@ export const setLocalStorage = async ({ key, value }) => {
 export const getLocalStorage = async (key) => {
   try {
     const value = await AsyncStorage.getItem(key);
+
     return value;
   } catch (error) {
     console.error('Error getting data from AsyncStorage:', error);
+    return null;
   }
 };
 

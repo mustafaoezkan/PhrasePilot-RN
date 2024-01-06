@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Card, Text } from '@rneui/themed';
+import useGetWords from '../../hooks/useWord';
 
 const HomeScreen = () => {
+  const { wordList, fetchWords, loading, status, message, error } = useGetWords();
+
+  useEffect(() => {
+    fetchWords(1);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Card>

@@ -1,27 +1,22 @@
 import axiosInstance from '../api/axios';
 import { useState } from 'react';
-import { setLocalStorage } from '../util/common';
 
-const useLogin = () => {
+const useGetWords = () => {
+  const [wordList, setWordList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState();
+  const [message, setMessage] = useState();
   const [error, setError] = useState();
 
-  const login = async (email, password) => {
+  const fetchWords = async (page) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.post(
-        '/auth/login',
-        {
-          email,
-          password
-        },
-        { needsToken: false }
-      );
-
-      setLocalStorage({ key: 'token', value: response?.data?.token });
-      setLocalStorage({ key: 'userId', value: response?.data?.userId });
+      const response = await axiosInstance.get(`/words?page=${page}`, {
+        needsToken: true
+      });
+      setWordList(response.data.words);
       setStatus(response?.status);
+      setMessage(response?.data?.message);
       setLoading(false);
       return response;
     } catch (error) {
@@ -38,7 +33,7 @@ const useLogin = () => {
     }
   };
 
-  return { login, loading, status, error };
+  return { wordList, fetchWords, loading, status, message, error };
 };
 
-export default useLogin;
+export default useGetWords;

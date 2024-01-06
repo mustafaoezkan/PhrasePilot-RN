@@ -1,5 +1,5 @@
 import axios from 'axios';
-import getToken from '../util/common';
+import { getLocalStorage } from '../util/common';
 
 // Create an instance of axios with a base URL
 const axiosInstance = axios.create({
@@ -8,10 +8,10 @@ const axiosInstance = axios.create({
 
 // Request interceptor for adding common headers
 axiosInstance.interceptors.request.use(
-  (config) => {
+  async (config) => {
     // Check if the request requires a token
     if (config.needsToken) {
-      config.headers.Authorization = 'Bearer ' + getToken();
+      config.headers.Authorization = 'Bearer ' + (await getLocalStorage('token'));
     }
     return config;
   },
