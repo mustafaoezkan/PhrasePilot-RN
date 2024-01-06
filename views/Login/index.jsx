@@ -2,14 +2,21 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Input, Button, Card, Text } from '@rneui/themed';
 import useLogin from '../../hooks/useLogin';
+import { useNavigation } from '@react-navigation/native';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loading, error } = useLogin();
+  const { login, loading, status, error } = useLogin();
+  const navigation = useNavigation();
 
   const handleLogin = async () => {
     await login(email, password);
+
+    // Check if the login was successful
+    if (status === 200) {
+      navigation.navigate('Home'); // Navigate to the Home screen
+    }
   };
 
   return (
